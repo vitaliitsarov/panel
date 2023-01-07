@@ -40,13 +40,7 @@ class OfferController extends Controller
      */
     public function store(OfferPostRequest $request)
     {
-        // Входящий запрос действителен...
- 
-		// Извлеките проверенные входные данные...
-		$validated = $request->validated();
-
-		$offer = Offer::create($validated);
-
+		$offer = Offer::create($request->validated());
 		return redirect()->back();
     }
 
@@ -58,8 +52,8 @@ class OfferController extends Controller
      */
     public function show($id)
     {
-        //
-    }
+
+	}
 
     /**
      * Show the form for editing the specified resource.
@@ -81,7 +75,11 @@ class OfferController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $offer = Offer::findOrFail($id);
+        $offer->fill($request->except(['game_id']));
+        $offer->save();
+
+		return redirect()->back();
     }
 
     /**
@@ -92,9 +90,10 @@ class OfferController extends Controller
      */
     public function destroy(int $id)
     {
-        $offer = Offer::find($id);
-		$offer->delete();
+        $offer = Offer::findOrFail($id);
 
-		return redirect()->back();
+		if($offer->delete()) {
+			return redirect()->back();
+		}
     }
 }

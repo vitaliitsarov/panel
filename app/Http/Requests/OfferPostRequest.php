@@ -14,8 +14,8 @@ class OfferPostRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:255'],
-			'offer_id' => ['required'],
+            'name' => ['required', 'min:1', 'max:255'],
+			'offer_id' => ['required', 'unique:offers,offer_id'],
 			'image' => ['required'],
 			'status' => ['required'],
 			'offer_type' => ['required']
